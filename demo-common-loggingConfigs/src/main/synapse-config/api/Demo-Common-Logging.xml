@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/demo-common-logging" name="Demo-Common-Logging" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="POST GET">
+        <inSequence>
+            <property expression="json-eval($)" name="requestData" scope="default" type="STRING"/>
+            <property name="logPayload" scope="default" type="STRING" value="true"/>
+            <call-template target="gov:com/mycompany/seq-templates/common-logger-01.xml">
+                <with-param name="sequenceName" value="test-common-logger-seq"/>
+                <with-param name="message" value="Hello Common Logger"/>
+                <with-param name="logLevel" value="INFO"/>
+                <with-param name="integrationName" value="test-common-logger-integration"/>
+                <with-param name="payload" value="{$ctx:requestData}"/>
+            </call-template>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </resource>
+</api>

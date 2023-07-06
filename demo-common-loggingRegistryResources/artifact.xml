@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><artifacts>
+    <artifact name="common-logger" groupId="com.example.resource" version="1.0.0" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>common-logger.xml</file>
+            <path>/_system/governance/com/mycompany/commons/templates</path>
+            <mediaType>application/vnd.wso2.template</mediaType>
+            <properties/>
+        </item>
+    </artifact>
+    <artifact name="common-logger-01" groupId="com.example.resource" version="1.0.0" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>common-logger-01.xml</file>
+            <path>/_system/governance/com/mycompany/seq-templates</path>
+            <mediaType>application/vnd.wso2.template</mediaType>
+            <properties/>
+        </item>
+    </artifact>
+</artifacts>

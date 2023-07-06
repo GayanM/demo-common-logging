@@ -1,0 +1,17 @@
+openapi: 3.0.1
+info:
+  title: Demo-Common-Logging
+  description: API Definition of Demo-Common-Logging
+  version: 1.0.0
+servers:
+- url: http://localhost:8290/demo-common-logging
+paths:
+  /:
+    get:
+      responses:
+        default:
+          description: Default response
+    post:
+      responses:
+        default:
+          description: Default response

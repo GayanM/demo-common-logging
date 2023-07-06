@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template name="common-logger" xmlns="http://ws.apache.org/ns/synapse">
+    <parameter defaultValue="" isMandatory="false" name="sequenceName"/>
+    <parameter defaultValue="" isMandatory="false" name="message"/>
+    <parameter defaultValue="" isMandatory="false" name="logLevel"/>
+    <parameter defaultValue="" isMandatory="false" name="integrationName"/>
+    <parameter defaultValue="" isMandatory="false" name="payload"/>
+    <sequence>
+        <property description="uuid" expression="fn:substring-after(get-property('MessageID'),'urn:uuid:')" name="correlationId" scope="default" type="STRING"/>
+        <property description="logLevel" expression="$func:logLevel" name="logLevel" scope="default" type="STRING"/>
+        <property expression="$ctx:SYNAPSE_REST_API" name="getAPIName" scope="default" type="STRING"/>
+        <property expression="$ctx:proxy.name" name="getProxyServiceName" scope="default" type="STRING"/>
+        <!-- check if API or Proxy -->
+        <filter xpath="$ctx:getProxyServiceName !=''">
+            <then>
+                <property expression="$ctx:getProxyServiceName" name="ApiOrProxyName" scope="default" type="STRING"/>
+            </then>
+            <else>
+                <property expression="$ctx:getAPIName" name="ApiOrProxyName" scope="default" type="STRING"/>
+            </else>
+        </filter>
+        <!-- Different log categories -->
+        <switch source="get-property('logLevel')">
+            <case regex="INFO">
+                <filter xpath="$ctx:logPayload ='true' and $func:payload!=''">
+                    <then>
+                        <log description="WSO2_Logger" level="custom">
+                            <property expression="$ctx:correlationId" name="correlationId"/>
+                            <property expression="$func:integrationName" name="integrationName"/>
+                            <property expression="$ctx:ApiOrProxyName" name="apiNameOrServiceName"/>
+                            <property expression="get-property('SYSTEM_DATE')" name="systemDate"/>
+                            <property expression="get-property('SERVER_IP')" name="serverIP"/>
+                            <property expression="get-property('SERVER_HOST')" name="serverHost"/>
+                            <property expression="get-property('axis2', 'REMOTE_HOST')" name="clientHost"/>
+                            <property expression="$func:sequenceName" name="sequenceName"/>
+                            <property expression="$func:message" name="message"/>
+                            <property expression="$func:payload" name="payload"/>
+                        </log>
+                    </then>
+                    <else>
+                        <log description="WSO2_Logger" level="custom">
+                            <property expression="$ctx:correlationId" name="correlationId"/>
+                            <property expression="$func:integrationName" name="integrationName"/>
+                            <property expression="$ctx:ApiOrProxyName" name="apiNameOrServiceName"/>
+                            <property expression="get-property('SYSTEM_DATE')" name="systemDate"/>
+                            <property expression="get-property('SERVER_IP')" name="serverIP"/>
+                            <property expression="get-property('SERVER_HOST')" name="serverHost"/>
+                            <property expression="get-property('axis2', 'REMOTE_HOST')" name="clientHost"/>
+                            <property expression="$func:sequenceName" name="sequenceName"/>
+                            <property expression="$func:message" name="message"/>
+                        </log>
+                    </else>
+                </filter>
+            </case>
+            <case regex="DEBUG">
+                <log category="DEBUG" description="WSO2_Logger" level="full">
+                    <property expression="$ctx:correlationId" name="correlationId"/>
+                    <property expression="$func:integrationName" name="integrationName"/>
+                    <property expression="$ctx:ApiOrProxyName" name="apiNameOrServiceName"/>
+                    <property expression="get-property('SYSTEM_DATE')" name="systemDate"/>
+                    <property expression="get-property('SERVER_IP')" name="serverIP"/>
+                    <property expression="get-property('SERVER_HOST')" name="serverHost"/>
+                    <property expression="get-property('axis2', 'REMOTE_HOST')" name="clientHost"/>
+                    <property expression="$func:sequenceName" name="sequenceName"/>
+                    <property expression="$func:message" name="message"/>
+                    <property expression="get-property('ERROR_CODE')" name="messageCode"/>
+                    <property expression="get-property('ERROR_MESSAGE')" name="Errormessage"/>
+                    <property expression="get-property('ERROR_DETAIL')" name="ErrorDetail"/>
+                    <property expression="get-property('ERROR_EXCEPTION')" name="ErrorException"/>
+                </log>
+            </case>
+            <case regex="TRACE">
+                <log category="TRACE" description="WSO2_Logger" level="custom">
+                    <property expression="$ctx:correlationId" name="correlationId"/>
+                    <property expression="$func:integrationName" name="integrationName"/>
+                    <property expression="$ctx:ApiOrProxyName" name="apiNameOrServiceName"/>
+                    <property expression="get-property('SYSTEM_DATE')" name="systemDate"/>
+                    <property expression="get-property('SERVER_IP')" name="serverIP"/>
+                    <property expression="get-property('SERVER_HOST')" name="serverHost"/>
+                    <property expression="get-property('axis2', 'REMOTE_HOST')" name="clientHost"/>
+                    <property expression="$func:sequenceName" name="sequenceName"/>
+                    <property expression="$func:message" name="message"/>
+                    <property expression="get-property('ERROR_CODE')" name="messageCode"/>
+                    <property expression="get-property('ERROR_MESSAGE')" name="Errormessage"/>
+                    <property expression="get-property('ERROR_DETAIL')" name="ErrorDetail"/>
+                    <property expression="get-property('ERROR_EXCEPTION')" name="ErrorException"/>
+                </log>
+            </case>
+            <case regex="WARN">
+                <log category="WARN" description="WSO2_Logger" level="custom">
+                    <property expression="$ctx:correlationId" name="correlationId"/>
+                    <property expression="$func:integrationName" name="integrationName"/>
+                    <property expression="$ctx:ApiOrProxyName" name="apiNameOrServiceName"/>
+                    <property expression="get-property('SYSTEM_DATE')" name="systemDate"/>
+                    <property expression="get-property('SERVER_IP')" name="serverIP"/>
+                    <property expression="get-property('SERVER_HOST')" name="serverHost"/>
+                    <property expression="get-property('axis2', 'REMOTE_HOST')" name="clientHost"/>
+                    <property expression="$func:sequenceName" name="sequenceName"/>
+                    <property expression="$func:message" name="message"/>
+                    <property expression="get-property('ERROR_CODE')" name="messageCode"/>
+                    <property expression="get-property('ERROR_MESSAGE')" name="Errormessage"/>
+                    <property expression="get-property('ERROR_DETAIL')" name="ErrorDetail"/>
+                    <property expression="get-property('ERROR_EXCEPTION')" name="ErrorException"/>
+                </log>
+            </case>
+            <case regex="ERROR">
+                <property expression="$body" name="messageBody" scope="default" type="STRING"/>
+                <log category="ERROR" description="WSO2_Logger" level="custom">
+                    <property expression="$ctx:correlationId" name="correlationId"/>
+                    <property expression="$func:integrationName" name="integrationName"/>
+                    <property expression="$ctx:ApiOrProxyName" name="apiNameOrServiceName"/>
+                    <property expression="get-property('SYSTEM_DATE')" name="systemDate"/>
+                    <property expression="get-property('SERVER_IP')" name="serverIP"/>
+                    <property expression="get-property('SERVER_HOST')" name="serverHost"/>
+                    <property expression="get-property('axis2', 'REMOTE_HOST')" name="clientHost"/>
+                    <property expression="$func:sequenceName" name="sequenceName"/>
+                    <property expression="$func:message" name="message"/>
+                    <property expression="get-property('ERROR_CODE')" name="messageCode"/>
+                    <property expression="get-property('ERROR_mESSAGE')" name="Errormessage"/>
+                    <property expression="get-property('ERROR_DETAIL')" name="ErrorDetail"/>
+                    <property expression="get-property('ERROR_EXCEPTION')" name="ErrorException"/>
+                </log>
+            </case>
+            <case regex="FATAL">
+                <log category="FATAL" description="WSO2_Logger" level="custom">
+                    <property expression="$ctx:correlationId" name="correlationId"/>
+                    <property expression="$func:integrationName" name="integrationName"/>
+                    <property expression="$ctx:ApiOrProxyName" name="apiNameOrServiceName"/>
+                    <property expression="get-property('SYSTEM_DATE')" name="systemDate"/>
+                    <property expression="get-property('SERVER_IP')" name="serverIP"/>
+                    <property expression="get-property('SERVER_HOST')" name="serverHost"/>
+                    <property expression="get-property('axis2', 'REMOTE_HOST')" name="clientHost"/>
+                    <property expression="$func:sequenceName" name="sequenceName"/>
+                    <property expression="$func:message" name="message"/>
+                    <property expression="get-property('ERROR_CODE')" name="messageCode"/>
+                    <property expression="get-property('ERROR_MESSAGE')" name="Errormessage"/>
+                    <property expression="get-property('ERROR_DETAIL')" name="ErrorDetail"/>
+                    <property expression="get-property('ERROR_EXCEPTION')" name="ErrorException"/>
+                </log>
+            </case>
+            <default>
+                <log description="WSO2_Logger" level="custom">
+                    <property expression="$ctx:correlationId" name="correlationId"/>
+                    <property expression="$func:integrationName" name="integrationName"/>
+                    <property expression="$ctx:ApiOrProxyName" name="apiNameOrServiceName"/>
+                    <property expression="get-property('SYSTEM_DATE')" name="systemDate"/>
+                    <property expression="get-property('SERVER_IP')" name="serverIP"/>
+                    <property expression="get-property('SERVER_HOST')" name="serverHost"/>
+                    <property expression="get-property('axis2', 'REMOTE_HOST')" name="clientHost"/>
+                    <property expression="$func:sequenceName" name="sequenceName"/>
+                    <property expression="$func:message" name="message"/>
+                </log>
+            </default>
+        </switch>
+    </sequence>
+</template>
