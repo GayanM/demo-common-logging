@@ -5,10 +5,10 @@
             <property expression="json-eval($)" name="requestData" scope="default" type="STRING"/>
             <property name="logPayload" scope="default" type="STRING" value="true"/>
             <call-template target="gov:com/mycompany/seq-templates/common-logger.xml">
-                <with-param name="sequenceName" value="test-common-logger-seq"/>
+                <with-param name="sequenceName" value="Demo-Common-Logging"/>
                 <with-param name="message" value="Hello Common Logger"/>
                 <with-param name="logLevel" value="INFO"/>
-                <with-param name="integrationName" value="test-common-logger-integration"/>
+                <with-param name="integrationName" value="demo-common-logger-integration"/>
                 <with-param name="payload" value="{$ctx:requestData}"/>
             </call-template>
             <respond/>
