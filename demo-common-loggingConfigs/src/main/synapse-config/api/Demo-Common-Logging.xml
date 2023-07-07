@@ -4,7 +4,7 @@
         <inSequence>
             <property expression="json-eval($)" name="requestData" scope="default" type="STRING"/>
             <property name="logPayload" scope="default" type="STRING" value="true"/>
-            <call-template target="gov:com/mycompany/seq-templates/common-logger-01.xml">
+            <call-template target="gov:com/mycompany/seq-templates/common-logger.xml">
                 <with-param name="sequenceName" value="test-common-logger-seq"/>
                 <with-param name="message" value="Hello Common Logger"/>
                 <with-param name="logLevel" value="INFO"/>
